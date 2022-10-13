@@ -6,5 +6,6 @@ char *sstrcpy(char *dest,const char *src){
 		dest[count] = src[count];
 		count++;
 	}
+	dest[count] = '\0';
 	return dest;
 }
