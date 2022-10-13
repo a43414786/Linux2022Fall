@@ -1,8 +1,10 @@
 #include "../include/strcpy.h"
 
 char *sstrcpy(char *dest,const char *src){
-	for(int i = 0 ; i < 10 ; i++){
-		dest[i] = src[i];
+	int count = 0;
+	while(src[count] != '\0'){
+		dest[count] = src[count];
+		count++;
 	}
 	return dest;
 }
