@@ -1,6 +1,3 @@
-
-
-
 // **Configuration**
 #define ROUNDS 100
 #define D_GETTIME 1
