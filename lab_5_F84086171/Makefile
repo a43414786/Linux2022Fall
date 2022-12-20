@@ -16,6 +16,7 @@ all: $(TARGET)
 $(TARGET): $(OBJECTS)
 	mkdir -p $(BINDIR)
 	@echo "> Linking..."
+	@echo $^
 	$(CC) $^ -o $(TARGET)
 
 
