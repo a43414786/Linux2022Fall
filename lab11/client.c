@@ -39,24 +39,31 @@ int main(int argc, char const* argv[])
             printf("\nConnection Failed \n");
             return -1;
         }
+        //Loop for continuing send request
         for(;;){
             int counter = 0;
             char c;
+            //Clear the input buffer then read input
             memset(readBuffer,0,1024);
             while((c=getchar()) != '\n'){
                 readBuffer[counter++] = c;
             }
+            //Send request
             send(sock, readBuffer, strlen(readBuffer), 0);
+            //If request is 'kill' then print newline and exit program immediately
             if(!strcmp(readBuffer,"kill")){
                 printf("\n");
                 exit(0);
             }
+            //Get respones
             valread = read(sock, buffer, 1024);
+            //Print respones
             printf("%s", buffer);
+            //Clear the output buffer
             memset(buffer,0,1024);
         }
+	    // closing the connected socket
         close(client_fd);
     }
-	// closing the connected socket
 	return 0;
 }

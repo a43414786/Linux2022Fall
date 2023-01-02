@@ -50,7 +50,8 @@ int main(int argc, char const* argv[])
             exit(EXIT_FAILURE);
         }
         for(;;){
-            pthread_t tid; // 宣告 pthread id
+            pthread_t tid; //Declare pthread id
+            //Create new socket for new client
             int new_socket;
             if ((new_socket
                 = accept(server_fd, (struct sockaddr*)&address,
@@ -59,50 +60,63 @@ int main(int argc, char const* argv[])
                 perror("accept");
                 exit(EXIT_FAILURE);
             }
-            pthread_create(&tid, NULL, threadTask, &new_socket); // 建立子執行緒            
+            pthread_create(&tid, NULL, threadTask, &new_socket); //Create thread            
         }
         // closing the listening socket
         shutdown(server_fd, SHUT_RDWR);
     }
     return 0;
 }
+//Thread Process
 void* threadTask(void *sock){
     int new_socket = *((int*) sock);
     int valread;
     char buffer[1024] = { 0 };
     char outputBuffer[1024] = { 0 };    
+    //Loop for continuing read request
     for(;;){
+        //Read request
         valread = read(new_socket, buffer, 1024);
+        //Process request and get respons
         msgProcessing(buffer,outputBuffer);
+        //Send respons to client
         send(new_socket, outputBuffer, strlen(outputBuffer), 0);
+        //Clear input & output buffer
         memset(buffer,0,1024);
         memset(outputBuffer,0,1024);
     }
     close(new_socket);
-    pthread_exit(NULL); // 離開子執行緒
+    pthread_exit(NULL); //End the thread
 }
 void msgProcessing(char*msg,char* output){
+    //Use strtok to seperate the command and auguments
     char *temp = strtok(msg," ");
     int counter = 0;
     if(!strcmp(temp,"add"))
     {
         int sum = 0;
+        //Get all auguments
         temp = strtok(NULL," ");
         while(temp){
+            //Check weither augument is digits or not 
             for(int i = 0 ; i < strlen(temp) ; i++){
                 if(isalpha(temp[i])){
+                    //Return message "Illegal input" if augument contain something that is not digit 
                     strcpy(output,"Illegal input\n");
                     return;
                 }
             }
+            //Sum out all auguments
             sum += atoi(temp);
             temp = strtok(NULL," ");
             counter++;
         }
         if(counter < 2){
+            //Return message "Wrong input number" if only one augument
             strcpy(output,"Wrong input number\n");
             return;
         }
+        //Turn sum(int) to string and return it as the respons
         sprintf(output,"%d\n",sum);
     }
     else if(!strcmp(temp,"mul"))
