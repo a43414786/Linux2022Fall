@@ -10,7 +10,7 @@
 #include <pthread.h>
 #define PORT 8080
 
-void* threadTask(void *data);
+void* threadTask(void *sock);
 void msgProcessing(char*msg,char* output);
 
 int main(int argc, char const* argv[])
@@ -88,14 +88,10 @@ void msgProcessing(char*msg,char* output){
     {
         int sum = 0;
         temp = strtok(NULL," ");
-        if(!temp){
-            strcpy(output,"Wrong input number");
-            return;
-        } 
         while(temp){
             for(int i = 0 ; i < strlen(temp) ; i++){
                 if(isalpha(temp[i])){
-                    strcpy(output,"Illegal input");
+                    strcpy(output,"Illegal input\n");
                     return;
                 }
             }
@@ -104,23 +100,19 @@ void msgProcessing(char*msg,char* output){
             counter++;
         }
         if(counter < 2){
-            strcpy(output,"Wrong input number");
+            strcpy(output,"Wrong input number\n");
             return;
         }
-        sprintf(output,"%d",sum);
+        sprintf(output,"%d\n",sum);
     }
     else if(!strcmp(temp,"mul"))
     {
         int sum = 1;
         temp = strtok(NULL," ");
-        if(!temp){
-            strcpy(output,"Wrong input number");
-            return;
-        } 
         while(temp){
             for(int i = 0 ; i < strlen(temp) ; i++){
                 if(isalpha(temp[i])){
-                    strcpy(output,"Illegal input");
+                    strcpy(output,"Illegal input\n");
                     return;
                 }
             }
@@ -129,23 +121,19 @@ void msgProcessing(char*msg,char* output){
             counter++;
         }
         if(counter < 2){
-            strcpy(output,"Wrong input number");
+            strcpy(output,"Wrong input number\n");
             return;
         }
-        sprintf(output,"%d",sum);
+        sprintf(output,"%d\n",sum);
     }
     else if(!strcmp(temp,"abs"))
     {
         int rst = 0;
         temp = strtok(NULL," ");
-        if(!temp){
-            strcpy(output,"Wrong input number");
-            return;
-        } 
         while(temp){
             for(int i = 0 ; i < strlen(temp) ; i++){
                 if(isalpha(temp[i])){
-                    strcpy(output,"Illegal input");
+                    strcpy(output,"Illegal input\n");
                     return;
                 }
             }
@@ -153,11 +141,11 @@ void msgProcessing(char*msg,char* output){
             temp = strtok(NULL," ");
             counter++;
         }
-        if(counter != 1){
-            strcpy(output,"Illegal input");
+        if(counter < 1){
+            strcpy(output,"Illegal input\n");
             return;
         }
-        sprintf(output,"%d",rst);
+        sprintf(output,"%d\n",rst);
     }
     else if(!strcmp(temp,"kill"))
     {
@@ -165,7 +153,7 @@ void msgProcessing(char*msg,char* output){
     }
     else
     {
-        strcpy(output,"Hello");
+        strcpy(output,"Hello\n");
     }
 
 }

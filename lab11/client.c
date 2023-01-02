@@ -2,6 +2,7 @@
 // programming
 #include <arpa/inet.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
@@ -46,8 +47,12 @@ int main(int argc, char const* argv[])
                 readBuffer[counter++] = c;
             }
             send(sock, readBuffer, strlen(readBuffer), 0);
+            if(!strcmp(readBuffer,"kill")){
+                printf("\n");
+                exit(0);
+            }
             valread = read(sock, buffer, 1024);
-            printf("%s\n", buffer);
+            printf("%s", buffer);
             memset(buffer,0,1024);
         }
         close(client_fd);
